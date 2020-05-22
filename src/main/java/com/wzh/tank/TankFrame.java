@@ -16,7 +16,7 @@ import java.awt.event.WindowEvent;
  */
 public class TankFrame extends Frame {
 
-    Tank mainTank=new Tank(200,200,Dir.DOWN);
+    Tank mainTank=new Tank(200,200,Dir.DOWN,this);
     Bullet bullet=new Bullet(300,300,Dir.DOWN);
 
     static final int GAME_WIDTH=800,GAME_HEIGHT=600;
@@ -80,6 +80,9 @@ public class TankFrame extends Frame {
                 case KeyEvent.VK_DOWN:
                     bD = true;
                     break;
+                case KeyEvent.VK_CONTROL:
+                    mainTank.fire();
+                    break;
             }
             setMainTankDir();
         }
@@ -116,5 +119,9 @@ public class TankFrame extends Frame {
             }
 
         }
+    }
+
+    public void setBullet(Bullet bullet) {
+        this.bullet = bullet;
     }
 }

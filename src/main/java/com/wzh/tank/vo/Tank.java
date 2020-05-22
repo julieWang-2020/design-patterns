@@ -1,5 +1,6 @@
 package com.wzh.tank.vo;
 
+import com.wzh.tank.TankFrame;
 import lombok.Data;
 
 import java.awt.*;
@@ -16,10 +17,13 @@ public class Tank {
 
     private boolean moving=false;
 
-    public Tank(int x, int y, Dir dir) {
+    private TankFrame tf;
+
+    public Tank(int x, int y, Dir dir,TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.tf=tf;
     }
 
     public void paint(Graphics g) {
@@ -49,4 +53,7 @@ public class Tank {
         }
     }
 
+    public void fire() {
+        tf.setBullet(new Bullet(this.x,this.y,this.dir));
+    }
 }
