@@ -16,12 +16,12 @@ public class Tank {
     private Dir dir = Dir.DOWN;
     private boolean isMain=false;
 
-    private static final int SPEED=2;
+    private static final int SPEED=10;
 
     public static final int WIDTH=ResourceMgr.tankD.getWidth(),HEIGHT=ResourceMgr.tankD.getHeight();
     private boolean moving=false;
 
-    private boolean live=true;
+    private boolean living=true;
 
     private TankFrame tf;
 
@@ -34,6 +34,8 @@ public class Tank {
     }
 
     public void paint(Graphics g) {
+        if(!living) tf.getEnemyTanks().remove(this);
+
         switch (dir){
             case LEFT:
                 g.drawImage(ResourceMgr.tankL,x,y,null);
@@ -68,7 +70,7 @@ public class Tank {
                 break;
         }
         if(x<0 || y <0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT)
-            live=false;
+            living=false;
     }
 
     public void fire() {
@@ -77,5 +79,9 @@ public class Tank {
         int bx=this.x+offsetX,by=this.y+offsetY;
 //        System.out.println("TankX:"+x+",TankY:"+y+",BulletX:"+bx+",BulletY:"+by+",offsetX:"+WIDTH +","+Bullet.WIDTH+",offsetY:"+offsetY);
         tf.getBullets().add(new Bullet(bx,by,this.dir,tf));
+    }
+
+    public void die() {
+        this.living=false;
     }
 }

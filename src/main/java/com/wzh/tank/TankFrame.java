@@ -10,7 +10,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -76,15 +75,24 @@ public class TankFrame extends Frame {
         g.setColor(c);
 
         mainTank.paint(g);
-        for(Iterator<Tank> it=enemyTanks.iterator();it.hasNext();){
-            Tank tank=it.next();
-            if(!tank.isLive()) it.remove();
-            else tank.paint(g);
+        for(int i=0;i<enemyTanks.size();i++){
+            enemyTanks.get(i).paint(g);
         }
-        for(Iterator<Bullet> it=bullets.iterator();it.hasNext();){
-            Bullet bullet=it.next();
-            if(!bullet.isLive()) it.remove();
-            else bullet.paint(g);
+        for(int i=0;i<bullets.size();i++){
+            bullets.get(i).paint(g);
+        }
+//        for(Iterator<Bullet> it=bullets.iterator();it.hasNext();){
+//            Bullet bullet=it.next();
+//            if(!bullet.isLiving()) it.remove();
+//            else bullet.paint(g);
+//        }
+
+        // 碰撞检测
+        for(int i=0;i<bullets.size(); i++){
+            Bullet b=bullets.get(i);
+            for(int j=0;j<enemyTanks.size();j++){
+                b.collideWith(enemyTanks.get(j));
+            }
         }
 
     }
