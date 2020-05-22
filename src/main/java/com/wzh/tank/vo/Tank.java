@@ -5,6 +5,7 @@ import com.wzh.tank.TankFrame;
 import lombok.Data;
 
 import java.awt.*;
+import java.util.Random;
 
 /**
  * @author wzh
@@ -12,25 +13,23 @@ import java.awt.*;
  */
 @Data
 public class Tank {
+    private static final int SPEED=1;
+    public static final int WIDTH=ResourceMgr.tankD.getWidth(),HEIGHT=ResourceMgr.tankD.getHeight();
+
     private int x,y;
     private Dir dir = Dir.DOWN;
-    private boolean isMain=false;
-
-    private static final int SPEED=10;
-
-    public static final int WIDTH=ResourceMgr.tankD.getWidth(),HEIGHT=ResourceMgr.tankD.getHeight();
-    private boolean moving=false;
-
+    private boolean moving=true;
     private boolean living=true;
-
+    private Random random=new Random();
     private TankFrame tf;
+    private Group group;
 
-    public Tank(int x, int y, Dir dir,TankFrame tf,boolean isMain) {
+    public Tank(int x, int y, Dir dir,Group group,TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.group=group;
         this.tf=tf;
-        this.isMain=isMain;
     }
 
     public void paint(Graphics g) {
@@ -54,7 +53,7 @@ public class Tank {
     }
 
     private void move() {
-        if(!moving && isMain) return;
+        if(!moving) return;
         switch (dir){
             case LEFT:
                 x-=SPEED;
@@ -70,7 +69,11 @@ public class Tank {
                 break;
         }
         if(x<0 || y <0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT)
-            living=false;
+            die();
+
+
+        if(random.nextInt(10) >8) this.fire();
+
     }
 
     public void fire() {
@@ -78,7 +81,7 @@ public class Tank {
         int offsetY = (HEIGHT- Bullet.HEIGHT) / 2;
         int bx=this.x+offsetX,by=this.y+offsetY;
 //        System.out.println("TankX:"+x+",TankY:"+y+",BulletX:"+bx+",BulletY:"+by+",offsetX:"+WIDTH +","+Bullet.WIDTH+",offsetY:"+offsetY);
-        tf.getBullets().add(new Bullet(bx,by,this.dir,tf));
+        tf.getBullets().add(new Bullet(bx,by,this.dir,group,tf));
     }
 
     public void die() {

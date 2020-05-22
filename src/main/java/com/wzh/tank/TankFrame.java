@@ -1,8 +1,6 @@
 package com.wzh.tank;
 
-import com.wzh.tank.vo.Bullet;
-import com.wzh.tank.vo.Dir;
-import com.wzh.tank.vo.Tank;
+import com.wzh.tank.vo.*;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -21,10 +19,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class TankFrame extends Frame {
 
-    Tank mainTank=new Tank(200,400,Dir.DOWN,this,true);
+    Tank mainTank=new Tank(200,400,Dir.DOWN,Group.GOOD,this);
     List<Bullet> bullets=new ArrayList<>();
     List<Tank> enemyTanks=new ArrayList<>();
-
+    Explode explode=new Explode(100,100,this);
     public static final int GAME_WIDTH=800,GAME_HEIGHT=600;
     public TankFrame() {
         setSize(GAME_WIDTH, GAME_HEIGHT);
@@ -94,7 +92,7 @@ public class TankFrame extends Frame {
                 b.collideWith(enemyTanks.get(j));
             }
         }
-
+        explode.paint(g);
     }
 
     class MyKeyListener extends KeyAdapter {
