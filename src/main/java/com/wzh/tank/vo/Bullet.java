@@ -1,28 +1,42 @@
 package com.wzh.tank.vo;
 
-import java.awt.*;
+import com.wzh.tank.ResourceMgr;
+import com.wzh.tank.TankFrame;
+import lombok.Data;
 
+import java.awt.*;
+@Data
 public class Bullet {
 
     private static final int SPEED=10;
-    public static final int WIDTH=30,HEIGHT=30;
+    public static final int WIDTH=ResourceMgr.bulletD.getWidth(),HEIGHT=ResourceMgr.bulletD.getHeight();
 
     private int x,y;
     private Dir dir;
-
-
-    public Bullet(int x, int y, Dir dir) {
+    private boolean live=true;
+    private TankFrame tf;
+    public Bullet(int x, int y, Dir dir, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.tf=tf;
     }
 
     public void paint(Graphics g) {
-//        System.out.println("paint");
-        Color c=g.getColor();
-        g.setColor(Color.RED);
-        g.fillOval(x, y, 50, 50);
-        g.setColor(c);
+        switch (dir){
+            case LEFT:
+                g.drawImage(ResourceMgr.bulletL,x,y,null);
+                break;
+            case UP:
+                g.drawImage(ResourceMgr.bulletU,x,y,null);
+                break;
+            case RIGHT:
+                g.drawImage(ResourceMgr.bulletR,x,y,null);
+                break;
+            case DOWN:
+                g.drawImage(ResourceMgr.bulletD,x,y,null);
+                break;
+        }
         move();
     }
 
@@ -41,6 +55,9 @@ public class Bullet {
                 y+=SPEED;
                 break;
         }
+
+        if(x<0 || y <0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT)
+            live=false;
     }
 
 }

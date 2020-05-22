@@ -9,6 +9,12 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author wzh
@@ -16,10 +22,11 @@ import java.awt.event.WindowEvent;
  */
 public class TankFrame extends Frame {
 
-    Tank mainTank=new Tank(200,200,Dir.DOWN,this);
-    Bullet bullet=new Bullet(300,300,Dir.DOWN);
+    Tank mainTank=new Tank(200,400,Dir.DOWN,this,true);
+    List<Bullet> bullets=new ArrayList<>();
+    List<Tank> enemyTanks=new ArrayList<>();
 
-    static final int GAME_WIDTH=800,GAME_HEIGHT=600;
+    public static final int GAME_WIDTH=800,GAME_HEIGHT=600;
     public TankFrame() {
         setSize(GAME_WIDTH, GAME_HEIGHT);
         setResizable(false);
@@ -33,6 +40,14 @@ public class TankFrame extends Frame {
                 System.exit(0);
             }
         });
+
+//        addEnemyTask();
+    }
+
+    private void addEnemyTask() {
+        ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
+        // 从现在开始1秒钟之后，每隔1秒钟执行一次job1
+        service.scheduleAtFixedRate(new EnemyTankTask(this), 1, 2, TimeUnit.SECONDS);
     }
 
     Image offScreenImage=null;
@@ -54,8 +69,24 @@ public class TankFrame extends Frame {
 
     @Override
     public void paint(Graphics g) {
+        Color c=g.getColor();
+        g.setColor(Color.WHITE);
+        g.drawString("敌机数量："+enemyTanks.size(),16,60);
+        g.drawString("子弹数量："+bullets.size(),16,80);
+        g.setColor(c);
+
         mainTank.paint(g);
-        bullet.paint(g);
+        for(Iterator<Tank> it=enemyTanks.iterator();it.hasNext();){
+            Tank tank=it.next();
+            if(!tank.isLive()) it.remove();
+            else tank.paint(g);
+        }
+        for(Iterator<Bullet> it=bullets.iterator();it.hasNext();){
+            Bullet bullet=it.next();
+            if(!bullet.isLive()) it.remove();
+            else bullet.paint(g);
+        }
+
     }
 
     class MyKeyListener extends KeyAdapter {
@@ -89,7 +120,6 @@ public class TankFrame extends Frame {
 
         @Override
         public void keyReleased(KeyEvent e) {
-//            System.out.println("key release");
             int key = e.getKeyCode();
             switch (key) {
                 case KeyEvent.VK_LEFT:
@@ -121,7 +151,11 @@ public class TankFrame extends Frame {
         }
     }
 
-    public void setBullet(Bullet bullet) {
-        this.bullet = bullet;
+    public List<Bullet> getBullets() {
+        return bullets;
+    }
+
+    public List<Tank> getEnemyTanks() {
+        return enemyTanks;
     }
 }
