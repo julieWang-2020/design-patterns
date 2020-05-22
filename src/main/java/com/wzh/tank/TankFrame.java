@@ -1,5 +1,8 @@
 package com.wzh.tank;
 
+import com.wzh.tank.vo.Dir;
+import com.wzh.tank.vo.Tank;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -12,7 +15,8 @@ import java.awt.event.WindowEvent;
  */
 public class TankFrame extends Frame {
 
-    int x = 200, y = 200;
+    Tank mainTank=new Tank(200,200,Dir.DOWN);
+
 
     public TankFrame() {
         setSize(800, 600);
@@ -32,9 +36,7 @@ public class TankFrame extends Frame {
     @Override
     public void paint(Graphics g) {
         System.out.println("paint");
-        g.fillRect(x, y, 50, 50);
-//        x+=10;
-//        y+=10;
+        mainTank.paint(g);
     }
 
     class MyKeyListener extends KeyAdapter {
@@ -60,9 +62,7 @@ public class TankFrame extends Frame {
                     bD = true;
                     break;
             }
-//            System.out.println("key pressed");
-//            x+=200;
-//            repaint();
+            setMainTankDir();
         }
 
         @Override
@@ -83,7 +83,14 @@ public class TankFrame extends Frame {
                     bD = false;
                     break;
             }
+            setMainTankDir();
+        }
 
+        private void setMainTankDir() {
+            if(bL) mainTank.setDir(Dir.LEFT);
+            if(bU) mainTank.setDir(Dir.UP);
+            if(bR) mainTank.setDir(Dir.RIGHT);
+            if(bD) mainTank.setDir(Dir.DOWN);
         }
     }
 }

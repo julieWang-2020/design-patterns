@@ -22,7 +22,7 @@ public class Main {
 
         TankFrame tf=new TankFrame();
         while (true){
-            Thread.sleep(500);
+            Thread.sleep(50);
 //            tf.x+=200;
             tf.repaint();
         }
