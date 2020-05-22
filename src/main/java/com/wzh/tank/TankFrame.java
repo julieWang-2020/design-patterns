@@ -1,5 +1,6 @@
 package com.wzh.tank;
 
+import com.wzh.tank.vo.Bullet;
 import com.wzh.tank.vo.Dir;
 import com.wzh.tank.vo.Tank;
 
@@ -16,10 +17,11 @@ import java.awt.event.WindowEvent;
 public class TankFrame extends Frame {
 
     Tank mainTank=new Tank(200,200,Dir.DOWN);
+    Bullet bullet=new Bullet(300,300,Dir.DOWN);
 
-
+    static final int GAME_WIDTH=800,GAME_HEIGHT=600;
     public TankFrame() {
-        setSize(800, 600);
+        setSize(GAME_WIDTH, GAME_HEIGHT);
         setResizable(false);
         setTitle("tank war");
         setVisible(true);
@@ -33,10 +35,27 @@ public class TankFrame extends Frame {
         });
     }
 
+    Image offScreenImage=null;
+    @Override
+    public void update(Graphics g) {
+        // 双缓冲消除闪烁
+        // 两支画笔 g 系统的画笔， gOffScreen 内存画笔
+        if(offScreenImage == null) {
+            offScreenImage = this.createImage(GAME_WIDTH, GAME_HEIGHT);
+        }
+        Graphics gOffScreen=offScreenImage.getGraphics();
+        Color c=gOffScreen.getColor();
+        gOffScreen.setColor(Color.BLACK);
+        gOffScreen.fillRect(0, 0, GAME_WIDTH, GAME_WIDTH);
+        gOffScreen.setColor(c);
+        print(gOffScreen);
+        g.drawImage(offScreenImage,0,0,null);
+    }
+
     @Override
     public void paint(Graphics g) {
-        System.out.println("paint");
         mainTank.paint(g);
+        bullet.paint(g);
     }
 
     class MyKeyListener extends KeyAdapter {
@@ -87,10 +106,15 @@ public class TankFrame extends Frame {
         }
 
         private void setMainTankDir() {
-            if(bL) mainTank.setDir(Dir.LEFT);
-            if(bU) mainTank.setDir(Dir.UP);
-            if(bR) mainTank.setDir(Dir.RIGHT);
-            if(bD) mainTank.setDir(Dir.DOWN);
+            if(!bL && !bU && !bR && !bD) mainTank.setMoving(false);
+            else {
+                mainTank.setMoving(true);
+                if(bL) mainTank.setDir(Dir.LEFT);
+                if(bU) mainTank.setDir(Dir.UP);
+                if(bR) mainTank.setDir(Dir.RIGHT);
+                if(bD) mainTank.setDir(Dir.DOWN);
+            }
+
         }
     }
 }

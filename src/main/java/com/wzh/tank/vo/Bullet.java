@@ -1,38 +1,32 @@
 package com.wzh.tank.vo;
 
-import lombok.Data;
-
 import java.awt.*;
 
-/**
- * @author wzh
- * @date 2020-05-20 23:18
- */
-@Data
-public class Tank {
-    private int x,y;
-    private Dir dir = Dir.DOWN;
+public class Bullet {
+
     private static final int SPEED=10;
+    public static final int WIDTH=30,HEIGHT=30;
 
-    private boolean moving=false;
+    private int x,y;
+    private Dir dir;
 
-    public Tank(int x, int y, Dir dir) {
+
+    public Bullet(int x, int y, Dir dir) {
         this.x = x;
         this.y = y;
         this.dir = dir;
     }
 
     public void paint(Graphics g) {
-        System.out.println("paint");
+//        System.out.println("paint");
         Color c=g.getColor();
-        g.setColor(Color.YELLOW);
-        g.fillRect(x, y, 50, 50);
+        g.setColor(Color.RED);
+        g.fillOval(x, y, 50, 50);
         g.setColor(c);
         move();
     }
 
     private void move() {
-        if(!moving) return;
         switch (dir){
             case LEFT:
                 x-=SPEED;
