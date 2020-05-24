@@ -89,8 +89,15 @@ public class Tank {
                 break;
         }
 
-        if(random.nextInt(10) >8) this.fire();
+        if(this.group == Group.BAD && random.nextInt(100) > 95)
+            this.fire();
 
+        if(this.group == Group.BAD && random.nextInt(100)> 95)
+            randomDir();
+    }
+
+    private void randomDir(){
+        this.dir=Dir.values()[random.nextInt(4)];
     }
 
     public void fire() {
@@ -104,6 +111,8 @@ public class Tank {
     public void die() {
         this.living=false;
         // die 的同时增加爆炸效果
-        tf.getExplodes().add(new Explode(this.x,this.y,tf));
+        int offsetX = this.x+(WIDTH - Explode.WIDTH) / 2;
+        int offsetY = this.y+(HEIGHT- Explode.HEIGHT) / 2;
+        tf.getExplodes().add(new Explode(offsetX,offsetY,tf));
     }
 }
