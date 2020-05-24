@@ -8,16 +8,22 @@ import java.io.IOException;
 
 public class ResourceMgr {
 
-    public static BufferedImage tankL,tankU,tankR,tankD;
+    public static BufferedImage goodTankL,goodTankU,goodTankR,goodTankD;
+    public static BufferedImage badTankL,badTankU,badTankR,badTankD;
     public static BufferedImage bulletL,bulletU,bulletR,bulletD;
 
     public static BufferedImage[] explodes=new BufferedImage[16];
     static {
         try {
-            tankU= ImageIO.read(ResourceMgr.class.getClassLoader().getResourceAsStream("images/BadTank1.png"));
-            tankL= ImageUtils.rotateImage(tankU,-90);
-            tankR= ImageUtils.rotateImage(tankU,90);
-            tankD= ImageUtils.rotateImage(tankU,180);
+            goodTankU= ImageIO.read(ResourceMgr.class.getClassLoader().getResourceAsStream("images/GoodTank1.png"));
+            goodTankL= ImageUtils.rotateImage(goodTankU,-90);
+            goodTankR= ImageUtils.rotateImage(goodTankU,90);
+            goodTankD= ImageUtils.rotateImage(goodTankU,180);
+
+            badTankU= ImageIO.read(ResourceMgr.class.getClassLoader().getResourceAsStream("images/BadTank1.png"));
+            badTankL= ImageUtils.rotateImage(badTankU,-90);
+            badTankR= ImageUtils.rotateImage(badTankU,90);
+            badTankD= ImageUtils.rotateImage(badTankU,180);
 
 
             bulletU= ImageIO.read(ResourceMgr.class.getClassLoader().getResourceAsStream("images/bulletU.gif"));
