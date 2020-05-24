@@ -35,6 +35,8 @@ public class Tank {
     public void paint(Graphics g) {
         if(!living) tf.getEnemyTanks().remove(this);
 
+        checkBoundary();
+
         switch (dir){
             case LEFT:
                 g.drawImage(ResourceMgr.tankL,x,y,null);
@@ -50,6 +52,24 @@ public class Tank {
                 break;
         }
         move();
+    }
+
+    private void checkBoundary() {
+        switch (dir){
+            case LEFT:
+                if(x < 0) this.dir=Dir.RIGHT;
+                break;
+            case UP:
+                if(y < 0) this.dir=Dir.DOWN;
+                break;
+            case RIGHT:
+                if(x >= (TankFrame.GAME_WIDTH - WIDTH)) this.dir=Dir.LEFT;
+                break;
+            case DOWN:
+                if(y >= (TankFrame.GAME_HEIGHT - HEIGHT)) this.dir=Dir.UP;
+                break;
+        }
+
     }
 
     private void move() {
@@ -68,9 +88,6 @@ public class Tank {
                 y+=SPEED;
                 break;
         }
-        if(x<0 || y <0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT)
-            die();
-
 
         if(random.nextInt(10) >8) this.fire();
 
@@ -86,5 +103,7 @@ public class Tank {
 
     public void die() {
         this.living=false;
+        // die 的同时增加爆炸效果
+        tf.getExplodes().add(new Explode(this.x,this.y,tf));
     }
 }

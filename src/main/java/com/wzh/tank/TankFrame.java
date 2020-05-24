@@ -22,8 +22,9 @@ public class TankFrame extends Frame {
     Tank mainTank=new Tank(200,400,Dir.DOWN,Group.GOOD,this);
     List<Bullet> bullets=new ArrayList<>();
     List<Tank> enemyTanks=new ArrayList<>();
-    Explode explode=new Explode(100,100,this);
-    public static final int GAME_WIDTH=800,GAME_HEIGHT=600;
+    List<Explode> explodes=new ArrayList<>();
+
+    public static final int GAME_WIDTH=1080,GAME_HEIGHT=960;
     public TankFrame() {
         setSize(GAME_WIDTH, GAME_HEIGHT);
         setResizable(false);
@@ -79,6 +80,10 @@ public class TankFrame extends Frame {
         for(int i=0;i<bullets.size();i++){
             bullets.get(i).paint(g);
         }
+
+        for(int i=0;i<explodes.size(); i++){
+            explodes.get(i).paint(g);
+        }
 //        for(Iterator<Bullet> it=bullets.iterator();it.hasNext();){
 //            Bullet bullet=it.next();
 //            if(!bullet.isLiving()) it.remove();
@@ -92,7 +97,8 @@ public class TankFrame extends Frame {
                 b.collideWith(enemyTanks.get(j));
             }
         }
-        explode.paint(g);
+
+
     }
 
     class MyKeyListener extends KeyAdapter {
@@ -163,5 +169,9 @@ public class TankFrame extends Frame {
 
     public List<Tank> getEnemyTanks() {
         return enemyTanks;
+    }
+
+    public List<Explode> getExplodes() {
+        return explodes;
     }
 }

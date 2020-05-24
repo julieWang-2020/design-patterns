@@ -5,6 +5,7 @@ import com.wzh.tank.TankFrame;
 
 import java.awt.*;
 
+
 public class Explode {
     public static final int WIDTH= ResourceMgr.explodes[0].getWidth();
     public static final int HEIGHT=ResourceMgr.explodes[0].getHeight();
@@ -19,9 +20,12 @@ public class Explode {
         this.tf=tf;
     }
     public void paint(Graphics g) {
-        g.drawImage(ResourceMgr.explodes[step++],x,y,null);
-
-        if(step>=ResourceMgr.explodes.length)
-            step=0;
+        if(step>=ResourceMgr.explodes.length) tf.getExplodes().remove(this) ;
+        else g.drawImage(ResourceMgr.explodes[step++],x,y,null);
     }
+
+    public int getStep() {
+        return step;
+    }
+
 }
