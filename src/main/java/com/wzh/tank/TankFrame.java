@@ -1,5 +1,6 @@
 package com.wzh.tank;
 
+import com.wzh.tank.conf.ProptertyMgr;
 import com.wzh.tank.vo.*;
 
 import java.awt.*;
@@ -9,9 +10,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author wzh
@@ -23,12 +21,14 @@ public class TankFrame extends Frame {
     List<Bullet> bullets=new ArrayList<>();
     List<Tank> enemyTanks=new ArrayList<>();
     List<Explode> explodes=new ArrayList<>();
+    Image offScreenImage=null;
 
-    public static final int GAME_WIDTH=1080,GAME_HEIGHT=960;
+    public static final int GAME_WIDTH= ProptertyMgr.getInt("tankGameWidth");
+    public static final int GAME_HEIGHT=ProptertyMgr.getInt("tankGameHeight");
     public TankFrame() {
         setSize(GAME_WIDTH, GAME_HEIGHT);
         setResizable(false);
-        setTitle("tank war");
+        setTitle(ProptertyMgr.getString("tankGameTitle"));
         setVisible(true);
 
         addKeyListener(new MyKeyListener());
@@ -42,13 +42,6 @@ public class TankFrame extends Frame {
 //        addEnemyTask();
     }
 
-    private void addEnemyTask() {
-        ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
-        // 从现在开始1秒钟之后，每隔1秒钟执行一次job1
-        service.scheduleAtFixedRate(new EnemyTankTask(this), 1, 2, TimeUnit.SECONDS);
-    }
-
-    Image offScreenImage=null;
     @Override
     public void update(Graphics g) {
         // 双缓冲消除闪烁

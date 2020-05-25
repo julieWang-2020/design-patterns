@@ -1,5 +1,7 @@
 package com.wzh.tank.conf;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.IOException;
 import java.util.Properties;
 
@@ -8,6 +10,8 @@ import java.util.Properties;
  * @date 2020-05-24 23:10
  */
 public class ProptertyMgr {
+
+    private ProptertyMgr(){}
 
     static Properties props =new Properties();
     static {
@@ -22,4 +26,17 @@ public class ProptertyMgr {
         if(props == null) return null;
         return props.get(key);
     }
+    public static String getString(String key){
+        Object obj=get(key);
+        if(obj == null) return null;
+        return obj.toString();
+    }
+
+    public static int getInt(String key){
+        String str=getString(key);
+        if(StringUtils.isEmpty(str)) return 0;
+
+        return Integer.parseInt(str);
+    }
+
 }
