@@ -13,7 +13,7 @@ public class ProptertyMgr {
 
     private ProptertyMgr(){}
 
-    static Properties props =new Properties();
+    private static Properties props =new Properties();
     static {
         try {
             props.load(ProptertyMgr.class.getClassLoader().getResourceAsStream("config.properties"));
