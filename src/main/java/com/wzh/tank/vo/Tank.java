@@ -2,6 +2,9 @@ package com.wzh.tank.vo;
 
 import com.wzh.tank.ResourceMgr;
 import com.wzh.tank.TankFrame;
+import com.wzh.tank.conf.ProptertyMgr;
+import com.wzh.tank.fire.FireStrategy;
+import com.wzh.tank.fire.FireStrategyFactory;
 import lombok.Data;
 
 import java.awt.*;
@@ -15,7 +18,6 @@ import java.util.Random;
 public class Tank {
     private static final int SPEED=1;
     public static final int WIDTH=ResourceMgr.goodTankD.getWidth(),HEIGHT=ResourceMgr.goodTankD.getHeight();
-
 
     private int x,y;
     private Dir dir = Dir.DOWN;
@@ -74,7 +76,7 @@ public class Tank {
 
 
         if(this.group == Group.BAD && random.nextInt(100) > 95)
-            this.fire();
+            this.fire(ProptertyMgr.getString("defaultFS"));
 
         if(this.group == Group.BAD && random.nextInt(100)> 95)
             randomDir();
@@ -85,9 +87,15 @@ public class Tank {
         rect.y = this.y;
     }
 
+    public void fire(String strategyPath) {
+        FireStrategy strategy= FireStrategyFactory.getInstance(strategyPath);
+        System.out.println(strategy+":"+strategy.hashCode());
+        strategy.fire(this);
+    }
+
     private void boundsCheck() {
         if(x < 0) this.x=28;
-        if(y < 0) this.y=10;
+        if(y < 0) this.y=15;
         if(x >= TankFrame.GAME_WIDTH ) this.x=TankFrame.GAME_WIDTH - WIDTH;
         if(y >= TankFrame.GAME_HEIGHT ) this.y=TankFrame.GAME_HEIGHT - HEIGHT;
 
@@ -97,13 +105,6 @@ public class Tank {
         this.dir=Dir.values()[random.nextInt(4)];
     }
 
-    public void fire() {
-        int offsetX = (WIDTH - Bullet.WIDTH) / 2;
-        int offsetY = (HEIGHT- Bullet.HEIGHT) / 2;
-        int bx=this.x+offsetX,by=this.y+offsetY;
-//        System.out.println("TankX:"+x+",TankY:"+y+",BulletX:"+bx+",BulletY:"+by+",offsetX:"+WIDTH +","+Bullet.WIDTH+",offsetY:"+offsetY);
-        tf.getBullets().add(new Bullet(bx,by,this.dir,group,tf));
-    }
 
     public void die() {
         this.living=false;
@@ -112,4 +113,5 @@ public class Tank {
         int offsetY = this.y+(HEIGHT- Explode.HEIGHT) / 2;
         tf.getExplodes().add(new Explode(offsetX,offsetY,tf));
     }
+
 }

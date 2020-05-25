@@ -25,6 +25,7 @@ public class Bullet {
         this.group=group;
         this.tf=tf;
         rect=new Rectangle(this.x,this.y,WIDTH,HEIGHT);
+        tf.getBullets().add(this);
     }
 
     public void paint(Graphics g) {

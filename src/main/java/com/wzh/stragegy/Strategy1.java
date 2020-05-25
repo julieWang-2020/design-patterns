@@ -22,5 +22,15 @@ public class Strategy1 {
         CatWeightComparator comparator=new CatWeightComparator();
         Arrays.sort(catArr1,comparator);
         System.out.println(Arrays.toString(catArr1));
+
+
+        Cat catArr2[]={new Cat(70),new Cat(100),new Cat(40),new Cat(15)};
+        Arrays.sort(catArr2,(o1,o2) ->{
+            if(o1.getWeight() > o2.getWeight()) return -1;
+            else if(o1.getWeight() < o2.getWeight()) return 1;
+            else return 0;
+        });
+        System.out.println(Arrays.toString(catArr2));
+
     }
 }

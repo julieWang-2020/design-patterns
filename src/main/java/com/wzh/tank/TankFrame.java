@@ -117,7 +117,10 @@ public class TankFrame extends Frame {
                     bD = true;
                     break;
                 case KeyEvent.VK_CONTROL:
-                    mainTank.fire();
+                    mainTank.fire(ProptertyMgr.getString("defaultFS"));
+                    break;
+                case KeyEvent.VK_SHIFT:
+                    mainTank.fire(ProptertyMgr.getString("doubleFS"));
                     break;
             }
             setMainTankDir();
