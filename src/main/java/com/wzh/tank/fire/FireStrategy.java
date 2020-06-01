@@ -1,6 +1,6 @@
 package com.wzh.tank.fire;
 
-import com.wzh.tank.vo.Tank;
+import com.wzh.tank.abstractfactory.BaseTank;
 
 /**
  * @author wzh
@@ -8,5 +8,5 @@ import com.wzh.tank.vo.Tank;
  */
 public interface FireStrategy {
 
-    public void fire(Tank tank);
+    public void fire(BaseTank tank);
 }

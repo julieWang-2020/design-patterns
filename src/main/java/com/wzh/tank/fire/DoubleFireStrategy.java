@@ -1,5 +1,6 @@
 package com.wzh.tank.fire;
 
+import com.wzh.tank.abstractfactory.BaseTank;
 import com.wzh.tank.vo.Bullet;
 import com.wzh.tank.vo.Tank;
 
@@ -23,10 +24,10 @@ public class DoubleFireStrategy implements FireStrategy {
     }
 
     @Override
-    public void fire(Tank tank) {
-        int bx=tank.getX()+ (tank.WIDTH - Bullet.WIDTH) / 2;
-        int by=tank.getY()+ (tank.HEIGHT- Bullet.HEIGHT) / 2;
-        new Bullet(bx,by,tank.getDir(),tank.getGroup(),tank.getTf());
-        new Bullet(bx+3,by+3,tank.getDir(),tank.getGroup(),tank.getTf());
+    public void fire(BaseTank tank) {
+        int bx=tank.getX()+ (Tank.WIDTH - Bullet.WIDTH) / 2;
+        int by=tank.getY()+ (Tank.HEIGHT- Bullet.HEIGHT) / 2;
+        tank.getTf().getGameFactory().createBullet(bx,by,tank.getDir(),tank.getGroup(),tank.getTf());
+        tank.getTf().getGameFactory().createBullet(bx+3,by+3,tank.getDir(),tank.getGroup(),tank.getTf());
     }
 }

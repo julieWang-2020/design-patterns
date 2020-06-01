@@ -2,11 +2,13 @@ package com.wzh.tank.vo;
 
 import com.wzh.tank.ResourceMgr;
 import com.wzh.tank.TankFrame;
+import com.wzh.tank.abstractfactory.BaseBullet;
+import com.wzh.tank.abstractfactory.BaseTank;
 import lombok.Data;
 
 import java.awt.*;
 @Data
-public class Bullet {
+public class Bullet extends BaseBullet {
 
     private static final int SPEED=10;
     public static final int WIDTH=ResourceMgr.bulletD.getWidth(),HEIGHT=ResourceMgr.bulletD.getHeight();
@@ -28,6 +30,7 @@ public class Bullet {
         tf.getBullets().add(this);
     }
 
+    @Override
     public void paint(Graphics g) {
         if(!living) tf.getBullets().remove(this);
         switch (dir){
@@ -68,7 +71,8 @@ public class Bullet {
         if(x<0 || y <0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) this.living=false;
     }
 
-    public void collideWith(Tank tank) {
+    @Override
+    public void collideWith(BaseTank tank) {
         if(tank.getGroup()==this.group) return;
         if(rect.intersects(tank.getRect())){
             tank.die();

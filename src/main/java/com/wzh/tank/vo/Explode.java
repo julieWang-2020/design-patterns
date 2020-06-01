@@ -2,11 +2,12 @@ package com.wzh.tank.vo;
 
 import com.wzh.tank.ResourceMgr;
 import com.wzh.tank.TankFrame;
+import com.wzh.tank.abstractfactory.BaseExplode;
 
 import java.awt.*;
 
 
-public class Explode {
+public class Explode extends BaseExplode {
     public static final int WIDTH= ResourceMgr.explodes[0].getWidth();
     public static final int HEIGHT=ResourceMgr.explodes[0].getHeight();
 
@@ -19,6 +20,8 @@ public class Explode {
         this.y = y;
         this.tf=tf;
     }
+
+    @Override
     public void paint(Graphics g) {
         if(step>=ResourceMgr.explodes.length) tf.getExplodes().remove(this) ;
 

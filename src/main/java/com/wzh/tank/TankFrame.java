@@ -1,7 +1,10 @@
 package com.wzh.tank;
 
+import com.wzh.tank.abstractfactory.*;
 import com.wzh.tank.conf.ProptertyMgr;
-import com.wzh.tank.vo.*;
+import com.wzh.tank.vo.Dir;
+import com.wzh.tank.vo.Group;
+import com.wzh.tank.vo.Tank;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -18,9 +21,11 @@ import java.util.List;
 public class TankFrame extends Frame {
 
     Tank mainTank=new Tank(200,400,Dir.DOWN,Group.GOOD,this);
-    List<Bullet> bullets=new ArrayList<>();
-    List<Tank> enemyTanks=new ArrayList<>();
-    List<Explode> explodes=new ArrayList<>();
+    List<BaseBullet> bullets=new ArrayList<>();
+    List<BaseTank> enemyTanks=new ArrayList<>();
+    List<BaseExplode> explodes=new ArrayList<>();
+
+    GameFactory gameFactory=new DefaultFactory();
     Image offScreenImage=null;
 
     public static final int GAME_WIDTH= ProptertyMgr.getInt("tankGameWidth");
@@ -85,7 +90,7 @@ public class TankFrame extends Frame {
 
         // 碰撞检测
         for(int i=0;i<bullets.size(); i++){
-            Bullet b=bullets.get(i);
+            BaseBullet b= bullets.get(i);
             for(int j=0;j<enemyTanks.size();j++){
                 b.collideWith(enemyTanks.get(j));
             }
@@ -159,15 +164,19 @@ public class TankFrame extends Frame {
         }
     }
 
-    public List<Bullet> getBullets() {
+    public List<BaseBullet> getBullets() {
         return bullets;
     }
 
-    public List<Tank> getEnemyTanks() {
+    public List<BaseTank> getEnemyTanks() {
         return enemyTanks;
     }
 
-    public List<Explode> getExplodes() {
+    public List<BaseExplode> getExplodes() {
         return explodes;
+    }
+
+    public GameFactory getGameFactory() {
+        return gameFactory;
     }
 }

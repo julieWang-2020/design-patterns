@@ -1,5 +1,6 @@
 package com.wzh.tank.fire;
 
+import com.wzh.tank.abstractfactory.BaseTank;
 import com.wzh.tank.vo.Bullet;
 import com.wzh.tank.vo.Tank;
 
@@ -24,11 +25,11 @@ public class DefaultFireStrategy implements FireStrategy {
     }
 
     @Override
-    public void fire(Tank tank) {
-        int offsetX = (tank.WIDTH - Bullet.WIDTH) / 2;
-        int offsetY = (tank.HEIGHT- Bullet.HEIGHT) / 2;
+    public void fire(BaseTank tank) {
+        int offsetX = (Tank.WIDTH - Bullet.WIDTH) / 2;
+        int offsetY = (Tank.HEIGHT- Bullet.HEIGHT) / 2;
         int bx=tank.getX()+offsetX,by=tank.getY()+offsetY;
-        new Bullet(bx,by,tank.getDir(),tank.getGroup(),tank.getTf());
+        tank.getTf().getGameFactory().createBullet(bx,by,tank.getDir(),tank.getGroup(),tank.getTf());
     }
 
 }
