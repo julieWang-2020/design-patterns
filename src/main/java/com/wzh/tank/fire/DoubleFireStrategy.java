@@ -26,7 +26,7 @@ public class DoubleFireStrategy implements FireStrategy {
     public void fire(Tank tank) {
         int bx=tank.getX()+ (tank.WIDTH - Bullet.WIDTH) / 2;
         int by=tank.getY()+ (tank.HEIGHT- Bullet.HEIGHT) / 2;
-        new Bullet(bx,by,tank.getDir(),tank.getGroup(),tank.getTf());
-        new Bullet(bx+3,by+3,tank.getDir(),tank.getGroup(),tank.getTf());
+        new Bullet(bx,by,tank.getDir(),tank.getGroup(),tank.getGm());
+        new Bullet(bx+3,by+3,tank.getDir(),tank.getGroup(),tank.getGm());
     }
 }

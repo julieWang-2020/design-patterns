@@ -1,7 +1,7 @@
 package com.wzh.tank.vo;
 
+import com.wzh.tank.GameModel;
 import com.wzh.tank.ResourceMgr;
-import com.wzh.tank.TankFrame;
 
 import java.awt.*;
 
@@ -11,16 +11,15 @@ public class Explode {
     public static final int HEIGHT=ResourceMgr.explodes[0].getHeight();
 
     private int x,y;
-    private TankFrame tf;
-
+    private GameModel gm;
     private int step=0;
-    public Explode(int x, int y,TankFrame tf) {
+    public Explode(int x, int y,GameModel gm) {
         this.x = x;
         this.y = y;
-        this.tf=tf;
+        this.gm=gm;
     }
     public void paint(Graphics g) {
-        if(step>=ResourceMgr.explodes.length) tf.getExplodes().remove(this) ;
+        if(step>=ResourceMgr.explodes.length) gm.getExplodes().remove(this) ;
 
         else g.drawImage(ResourceMgr.explodes[step++],x,y,null);
     }

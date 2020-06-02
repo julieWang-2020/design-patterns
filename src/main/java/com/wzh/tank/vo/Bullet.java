@@ -1,5 +1,6 @@
 package com.wzh.tank.vo;
 
+import com.wzh.tank.GameModel;
 import com.wzh.tank.ResourceMgr;
 import com.wzh.tank.TankFrame;
 import lombok.Data;
@@ -15,21 +16,21 @@ public class Bullet {
     private int x,y;
     private Dir dir;
     private boolean living=true;
-    private TankFrame tf;
     private Group group;
+    private GameModel gm;
 
-    public Bullet(int x, int y, Dir dir, Group group,TankFrame tf) {
+    public Bullet(int x, int y, Dir dir, Group group, GameModel gm) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group=group;
-        this.tf=tf;
+        this.gm=gm;
         rect=new Rectangle(this.x,this.y,WIDTH,HEIGHT);
-        tf.getBullets().add(this);
+        gm.getBullets().add(this);
     }
 
     public void paint(Graphics g) {
-        if(!living) tf.getBullets().remove(this);
+        if(!living) gm.getBullets().remove(this);
         switch (dir){
             case LEFT:
                 g.drawImage(ResourceMgr.bulletL,x,y,null);

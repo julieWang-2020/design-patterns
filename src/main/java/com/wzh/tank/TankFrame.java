@@ -1,15 +1,13 @@
 package com.wzh.tank;
 
 import com.wzh.tank.conf.ProptertyMgr;
-import com.wzh.tank.vo.*;
+import com.wzh.tank.vo.Dir;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author wzh
@@ -17,10 +15,8 @@ import java.util.List;
  */
 public class TankFrame extends Frame {
 
-    Tank mainTank=new Tank(200,400,Dir.DOWN,Group.GOOD,this);
-    List<Bullet> bullets=new ArrayList<>();
-    List<Tank> enemyTanks=new ArrayList<>();
-    List<Explode> explodes=new ArrayList<>();
+    GameModel gm=new GameModel();
+
     Image offScreenImage=null;
 
     public static final int GAME_WIDTH= ProptertyMgr.getInt("tankGameWidth");
@@ -39,7 +35,6 @@ public class TankFrame extends Frame {
             }
         });
 
-//        addEnemyTask();
     }
 
     @Override
@@ -60,38 +55,7 @@ public class TankFrame extends Frame {
 
     @Override
     public void paint(Graphics g) {
-        Color c=g.getColor();
-        g.setColor(Color.WHITE);
-        g.drawString("敌机数量："+enemyTanks.size(),16,60);
-        g.drawString("子弹数量："+bullets.size(),16,80);
-        g.setColor(c);
-
-        mainTank.paint(g);
-        for(int i=0;i<enemyTanks.size();i++){
-            enemyTanks.get(i).paint(g);
-        }
-        for(int i=0;i<bullets.size();i++){
-            bullets.get(i).paint(g);
-        }
-
-        for(int i=0;i<explodes.size(); i++){
-            explodes.get(i).paint(g);
-        }
-//        for(Iterator<Bullet> it=bullets.iterator();it.hasNext();){
-//            Bullet bullet=it.next();
-//            if(!bullet.isLiving()) it.remove();
-//            else bullet.paint(g);
-//        }
-
-        // 碰撞检测
-        for(int i=0;i<bullets.size(); i++){
-            Bullet b=bullets.get(i);
-            for(int j=0;j<enemyTanks.size();j++){
-                b.collideWith(enemyTanks.get(j));
-            }
-        }
-
-
+        gm.paint(g);
     }
 
     class MyKeyListener extends KeyAdapter {
@@ -117,10 +81,10 @@ public class TankFrame extends Frame {
                     bD = true;
                     break;
                 case KeyEvent.VK_CONTROL:
-                    mainTank.fire(ProptertyMgr.getString("defaultFS"));
+                    gm.getMainTank().fire(ProptertyMgr.getString("defaultFS"));
                     break;
                 case KeyEvent.VK_SHIFT:
-                    mainTank.fire(ProptertyMgr.getString("doubleFS"));
+                    gm.getMainTank().fire(ProptertyMgr.getString("doubleFS"));
                     break;
             }
             setMainTankDir();
@@ -147,27 +111,16 @@ public class TankFrame extends Frame {
         }
 
         private void setMainTankDir() {
-            if(!bL && !bU && !bR && !bD) mainTank.setMoving(false);
+            if(!bL && !bU && !bR && !bD) gm.getMainTank().setMoving(false);
             else {
-                mainTank.setMoving(true);
-                if(bL) mainTank.setDir(Dir.LEFT);
-                if(bU) mainTank.setDir(Dir.UP);
-                if(bR) mainTank.setDir(Dir.RIGHT);
-                if(bD) mainTank.setDir(Dir.DOWN);
+                gm.getMainTank().setMoving(true);
+                if(bL) gm.getMainTank().setDir(Dir.LEFT);
+                if(bU) gm.getMainTank().setDir(Dir.UP);
+                if(bR) gm.getMainTank().setDir(Dir.RIGHT);
+                if(bD) gm.getMainTank().setDir(Dir.DOWN);
             }
 
         }
     }
 
-    public List<Bullet> getBullets() {
-        return bullets;
-    }
-
-    public List<Tank> getEnemyTanks() {
-        return enemyTanks;
-    }
-
-    public List<Explode> getExplodes() {
-        return explodes;
-    }
 }

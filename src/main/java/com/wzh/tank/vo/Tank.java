@@ -1,5 +1,6 @@
 package com.wzh.tank.vo;
 
+import com.wzh.tank.GameModel;
 import com.wzh.tank.ResourceMgr;
 import com.wzh.tank.TankFrame;
 import com.wzh.tank.conf.ProptertyMgr;
@@ -24,21 +25,22 @@ public class Tank {
     private boolean moving=true;
     private boolean living=true;
     private Random random=new Random();
-    private TankFrame tf;
     private Group group;
     private Rectangle rect;
 
-    public Tank(int x, int y, Dir dir,Group group,TankFrame tf) {
+    private GameModel gm;
+
+    public Tank(int x, int y, Dir dir, Group group, GameModel gameModel) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group=group;
-        this.tf=tf;
+        this.gm=gameModel;
         rect=new Rectangle(this.x,this.y,this.WIDTH,this.HEIGHT);;
     }
 
     public void paint(Graphics g) {
-        if(!living) tf.getEnemyTanks().remove(this);
+        if(!living) gm.getEnemyTanks().remove(this);
 
         switch (dir){
             case LEFT:
@@ -89,7 +91,7 @@ public class Tank {
 
     public void fire(String strategyPath) {
         FireStrategy strategy= FireStrategyFactory.getInstance(strategyPath);
-        System.out.println(strategy+":"+strategy.hashCode());
+//        System.out.println(strategy+":"+strategy.hashCode());
         strategy.fire(this);
     }
 
@@ -111,7 +113,7 @@ public class Tank {
         // die 的同时增加爆炸效果
         int offsetX = this.x+(WIDTH - Explode.WIDTH) / 2;
         int offsetY = this.y+(HEIGHT- Explode.HEIGHT) / 2;
-        tf.getExplodes().add(new Explode(offsetX,offsetY,tf));
+        gm.getExplodes().add(new Explode(offsetX,offsetY,gm));
     }
 
 }
