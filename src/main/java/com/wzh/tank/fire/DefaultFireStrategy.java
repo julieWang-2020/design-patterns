@@ -15,7 +15,7 @@ public class DefaultFireStrategy implements FireStrategy {
 
     static {
         instance=new DefaultFireStrategy();
-        System.out.println("DefaultFireStrategy======"+instance.hashCode());
+//        System.out.println("DefaultFireStrategy======"+instance.hashCode());
     }
 
 

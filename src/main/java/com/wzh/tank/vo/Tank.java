@@ -16,11 +16,10 @@ import java.util.Random;
  * @date 2020-05-20 23:18
  */
 @Data
-public class Tank {
-    private static final int SPEED=1;
+public class Tank extends GameObject{
+    private static final int SPEED=5;
     public static final int WIDTH=ResourceMgr.goodTankD.getWidth(),HEIGHT=ResourceMgr.goodTankD.getHeight();
 
-    private int x,y;
     private Dir dir = Dir.DOWN;
     private boolean moving=true;
     private boolean living=true;
@@ -39,8 +38,9 @@ public class Tank {
         rect=new Rectangle(this.x,this.y,this.WIDTH,this.HEIGHT);;
     }
 
+    @Override
     public void paint(Graphics g) {
-        if(!living) gm.getEnemyTanks().remove(this);
+        if(!living) gm.remove(this);
 
         switch (dir){
             case LEFT:
@@ -97,10 +97,9 @@ public class Tank {
 
     private void boundsCheck() {
         if(x < 0) this.x=28;
-        if(y < 0) this.y=15;
-        if(x >= TankFrame.GAME_WIDTH ) this.x=TankFrame.GAME_WIDTH - WIDTH;
-        if(y >= TankFrame.GAME_HEIGHT ) this.y=TankFrame.GAME_HEIGHT - HEIGHT;
-
+        if(y < 125) this.y=HEIGHT;
+        if(x+WIDTH >= TankFrame.GAME_WIDTH ) this.x=TankFrame.GAME_WIDTH - WIDTH;
+        if(y+HEIGHT >= TankFrame.GAME_HEIGHT ) this.y=TankFrame.GAME_HEIGHT - HEIGHT;
     }
 
     private void randomDir(){
@@ -113,7 +112,10 @@ public class Tank {
         // die 的同时增加爆炸效果
         int offsetX = this.x+(WIDTH - Explode.WIDTH) / 2;
         int offsetY = this.y+(HEIGHT- Explode.HEIGHT) / 2;
-        gm.getExplodes().add(new Explode(offsetX,offsetY,gm));
+        gm.add(new Explode(offsetX,offsetY,gm));
     }
 
+    public void stop(){
+        moving=false;
+    }
 }

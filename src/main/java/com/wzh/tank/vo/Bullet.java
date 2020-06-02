@@ -7,13 +7,12 @@ import lombok.Data;
 
 import java.awt.*;
 @Data
-public class Bullet {
+public class Bullet extends GameObject {
 
     private static final int SPEED=10;
     public static final int WIDTH=ResourceMgr.bulletD.getWidth(),HEIGHT=ResourceMgr.bulletD.getHeight();
 
     Rectangle rect;
-    private int x,y;
     private Dir dir;
     private boolean living=true;
     private Group group;
@@ -26,11 +25,12 @@ public class Bullet {
         this.group=group;
         this.gm=gm;
         rect=new Rectangle(this.x,this.y,WIDTH,HEIGHT);
-        gm.getBullets().add(this);
+        gm.add(this);
     }
 
+    @Override
     public void paint(Graphics g) {
-        if(!living) gm.getBullets().remove(this);
+        if(!living) gm.remove(this);
         switch (dir){
             case LEFT:
                 g.drawImage(ResourceMgr.bulletL,x,y,null);
@@ -69,15 +69,7 @@ public class Bullet {
         if(x<0 || y <0 || x > TankFrame.GAME_WIDTH || y > TankFrame.GAME_HEIGHT) this.living=false;
     }
 
-    public void collideWith(Tank tank) {
-        if(tank.getGroup()==this.group) return;
-        if(rect.intersects(tank.getRect())){
-            tank.die();
-            this.die();
-        }
-    }
-
-    private void die() {
+    public void die() {
         this.living=false;
     }
 }
