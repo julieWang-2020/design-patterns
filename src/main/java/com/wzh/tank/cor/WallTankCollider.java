@@ -18,7 +18,7 @@ public class WallTankCollider implements Collider {
             Tank t= (Tank) o2;
 
             if(w.getRect().intersects(t.getRect())){
-                t.stop();
+                t.bank();
             }
         }
         if(o2 instanceof Bullet && o1 instanceof Tank){

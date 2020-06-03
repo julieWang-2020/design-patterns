@@ -15,12 +15,11 @@ import java.awt.event.WindowEvent;
  */
 public class TankFrame extends Frame {
 
-    GameModel gm=new GameModel();
-
     Image offScreenImage=null;
 
     public static final int GAME_WIDTH= ProptertyMgr.getInt("tankGameWidth");
     public static final int GAME_HEIGHT=ProptertyMgr.getInt("tankGameHeight");
+
     public TankFrame() {
         setSize(GAME_WIDTH, GAME_HEIGHT);
         setResizable(false);
@@ -55,7 +54,7 @@ public class TankFrame extends Frame {
 
     @Override
     public void paint(Graphics g) {
-        gm.paint(g);
+        GameModel.getInstance().paint(g);
     }
 
     class MyKeyListener extends KeyAdapter {
@@ -81,10 +80,10 @@ public class TankFrame extends Frame {
                     bD = true;
                     break;
                 case KeyEvent.VK_CONTROL:
-                    gm.getMainTank().fire(ProptertyMgr.getString("defaultFS"));
+                    GameModel.getInstance().getMainTank().fire(ProptertyMgr.getString("defaultFS"));
                     break;
                 case KeyEvent.VK_SHIFT:
-                    gm.getMainTank().fire(ProptertyMgr.getString("doubleFS"));
+                    GameModel.getInstance().getMainTank().fire(ProptertyMgr.getString("doubleFS"));
                     break;
             }
             setMainTankDir();
@@ -111,13 +110,13 @@ public class TankFrame extends Frame {
         }
 
         private void setMainTankDir() {
-            if(!bL && !bU && !bR && !bD) gm.getMainTank().setMoving(false);
+            if(!bL && !bU && !bR && !bD) GameModel.getInstance().getMainTank().setMoving(false);
             else {
-                gm.getMainTank().setMoving(true);
-                if(bL) gm.getMainTank().setDir(Dir.LEFT);
-                if(bU) gm.getMainTank().setDir(Dir.UP);
-                if(bR) gm.getMainTank().setDir(Dir.RIGHT);
-                if(bD) gm.getMainTank().setDir(Dir.DOWN);
+                GameModel.getInstance().getMainTank().setMoving(true);
+                if(bL) GameModel.getInstance().getMainTank().setDir(Dir.LEFT);
+                if(bU) GameModel.getInstance().getMainTank().setDir(Dir.UP);
+                if(bR) GameModel.getInstance().getMainTank().setDir(Dir.RIGHT);
+                if(bD) GameModel.getInstance().getMainTank().setDir(Dir.DOWN);
             }
 
         }

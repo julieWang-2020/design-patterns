@@ -1,5 +1,8 @@
 package com.wzh.tank.fire;
 
+import com.wzh.tank.GameModel;
+import com.wzh.tank.decorator.RectDecorator;
+import com.wzh.tank.decorator.TailDecorator;
 import com.wzh.tank.vo.Bullet;
 import com.wzh.tank.vo.Tank;
 
@@ -28,7 +31,10 @@ public class DefaultFireStrategy implements FireStrategy {
         int offsetX = (tank.WIDTH - Bullet.WIDTH) / 2;
         int offsetY = (tank.HEIGHT- Bullet.HEIGHT) / 2;
         int bx=tank.getX()+offsetX,by=tank.getY()+offsetY;
-        new Bullet(bx,by,tank.getDir(),tank.getGroup(),tank.getGm());
+        GameModel.getInstance().add(
+                new RectDecorator(
+                        new TailDecorator(
+                                new Bullet(bx,by,tank.getDir(),tank.getGroup()))));
     }
 
 }

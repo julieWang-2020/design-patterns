@@ -14,23 +14,35 @@ import java.util.List;
  */
 public class GameModel {
 
+    private GameModel(){ }
 
-    Tank mainTank=new Tank(200,400, Dir.DOWN, Group.GOOD,this);
+    private static final GameModel instance=new GameModel();
+
+    public static GameModel getInstance() {
+        return instance;
+    }
+
+    static {
+        instance.init();
+    }
+
+    Tank mainTank=null;
+    private void init(){
+        mainTank= new Tank(200,400, Dir.DOWN, Group.GOOD);
+
+        add(new Wall(TankFrame.GAME_WIDTH/2,0,10,TankFrame.GAME_HEIGHT));
+        int initTankCount= ProptertyMgr.getInt("initTankCount");
+        for(int i=0;i<initTankCount;i++){
+            new Tank(50+i*80,200,  Dir.DOWN, Group.BAD);
+        }
+    }
 
     List<GameObject> objects=new ArrayList<>();
 
     ColliderChain colliderChain=new ColliderChain();
 
 
-    public GameModel(){
-        objects.add(new Wall(TankFrame.GAME_WIDTH/2,0));
-        int initTankCount= ProptertyMgr.getInt("initTankCount");
-        for(int i=0;i<initTankCount;i++){
-            int j =(int) (Math.random()*(4));
-            objects.add(new Tank(50+i*80,200,  Dir.values()[j], Group.BAD,this));
-        }
 
-    }
 
     public void paint(Graphics g) {
 //        Color c=g.getColor();

@@ -1,7 +1,5 @@
 package com.wzh.tank.vo;
 
-import com.wzh.tank.GameModel;
-import com.wzh.tank.TankFrame;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,14 +13,15 @@ import java.awt.*;
 @Getter
 public class Wall extends GameObject {
 
-    public static final int WIDTH=10;
-    private GameModel gm;
+    private int w,h;
     private Rectangle rect;
 
-    public Wall(int x, int y) {
+    public Wall(int x, int y,int w,int h) {
         this.x = x;
         this.y = y;
-        rect=new Rectangle(x,y,WIDTH, TankFrame.GAME_HEIGHT);
+        this.w = w;
+        this.h = h;
+        rect=new Rectangle(x,y,w, h);
 
     }
 
@@ -30,7 +29,17 @@ public class Wall extends GameObject {
     public void paint(Graphics g) {
         Color c=g.getColor();
         g.setColor(Color.CYAN);
-        g.fillRect(x,y,WIDTH, TankFrame.GAME_HEIGHT);
+        g.fillRect(x,y,w,h);
         g.setColor(c);
+    }
+
+    @Override
+    public int getWidth() {
+        return w;
+    }
+
+    @Override
+    public int getHeight() {
+        return h;
     }
 }

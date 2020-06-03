@@ -16,21 +16,19 @@ public class Bullet extends GameObject {
     private Dir dir;
     private boolean living=true;
     private Group group;
-    private GameModel gm;
 
-    public Bullet(int x, int y, Dir dir, Group group, GameModel gm) {
+    public Bullet(int x, int y, Dir dir, Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group=group;
-        this.gm=gm;
         rect=new Rectangle(this.x,this.y,WIDTH,HEIGHT);
-        gm.add(this);
+        GameModel.getInstance().add(this);
     }
 
     @Override
     public void paint(Graphics g) {
-        if(!living) gm.remove(this);
+        if(!living) GameModel.getInstance().remove(this);
         switch (dir){
             case LEFT:
                 g.drawImage(ResourceMgr.bulletL,x,y,null);
@@ -46,6 +44,15 @@ public class Bullet extends GameObject {
                 break;
         }
         move();
+    }
+    @Override
+    public int getWidth() {
+        return WIDTH;
+    }
+
+    @Override
+    public int getHeight() {
+        return HEIGHT;
     }
 
     private void move() {

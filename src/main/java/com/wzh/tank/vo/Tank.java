@@ -27,20 +27,23 @@ public class Tank extends GameObject{
     private Group group;
     private Rectangle rect;
 
-    private GameModel gm;
+    private int oldX,oldY;
 
-    public Tank(int x, int y, Dir dir, Group group, GameModel gameModel) {
+    public Tank(int x, int y, Dir dir, Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group=group;
-        this.gm=gameModel;
-        rect=new Rectangle(this.x,this.y,this.WIDTH,this.HEIGHT);;
+        rect=new Rectangle(this.x,this.y,this.WIDTH,this.HEIGHT);
+        GameModel.getInstance().add(this);
     }
 
     @Override
     public void paint(Graphics g) {
-        if(!living) gm.remove(this);
+        if(!living) GameModel.getInstance().remove(this);
+
+        oldX = x;
+        oldY = y;
 
         switch (dir){
             case LEFT:
@@ -57,6 +60,16 @@ public class Tank extends GameObject{
                 break;
         }
         move();
+    }
+
+    @Override
+    public int getWidth() {
+        return WIDTH;
+    }
+
+    @Override
+    public int getHeight() {
+        return HEIGHT;
     }
 
     private void move() {
@@ -106,13 +119,17 @@ public class Tank extends GameObject{
         this.dir=Dir.values()[random.nextInt(4)];
     }
 
+    public void bank(){
+        this.x = this.oldX;
+        this.y = this.oldY;
+    }
 
     public void die() {
         this.living=false;
         // die 的同时增加爆炸效果
         int offsetX = this.x+(WIDTH - Explode.WIDTH) / 2;
         int offsetY = this.y+(HEIGHT- Explode.HEIGHT) / 2;
-        gm.add(new Explode(offsetX,offsetY,gm));
+        GameModel.getInstance().add(new Explode(offsetX,offsetY));
     }
 
     public void stop(){
