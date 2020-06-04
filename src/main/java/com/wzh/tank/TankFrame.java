@@ -80,7 +80,7 @@ public class TankFrame extends Frame {
                     bD = true;
                     break;
                 case KeyEvent.VK_CONTROL:
-                    GameModel.getInstance().getMainTank().fire(ProptertyMgr.getString("defaultFS"));
+                    GameModel.getInstance().getMainTank().handleFireKey();
                     break;
                 case KeyEvent.VK_SHIFT:
                     GameModel.getInstance().getMainTank().fire(ProptertyMgr.getString("doubleFS"));
