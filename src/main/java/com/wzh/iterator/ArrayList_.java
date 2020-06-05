@@ -1,7 +1,5 @@
 package com.wzh.iterator;
 
-import java.util.Objects;
-
 /**
  * @author wzh
  * @date 2020-06-05 20:59
