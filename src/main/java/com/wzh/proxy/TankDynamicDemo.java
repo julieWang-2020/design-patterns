@@ -22,9 +22,9 @@ public class TankDynamicDemo implements Moveable{
 
 
     public static void main(String[] args) {
-        TankDynamicDemo demo=new TankDynamicDemo();
+        TankDynamicCjlibDemo demo=new TankDynamicCjlibDemo();
 
-        Moveable m= (Moveable) Proxy.newProxyInstance(TankDynamicDemo.class.getClassLoader()
+        Moveable m= (Moveable) Proxy.newProxyInstance(TankDynamicCjlibDemo.class.getClassLoader()
                 , new Class[]{Moveable.class},
                 new logHandler(demo));
         m.move();
@@ -33,9 +33,9 @@ public class TankDynamicDemo implements Moveable{
 
 class logHandler implements InvocationHandler{
 
-    TankDynamicDemo demo;
+    TankDynamicCjlibDemo demo;
 
-    public logHandler(TankDynamicDemo demo) {
+    public logHandler(TankDynamicCjlibDemo demo) {
         this.demo = demo;
     }
 
