@@ -14,13 +14,13 @@ public class ServletChain {
     public static void main(String[] args) {
         Request req=new Request();
         Response resp=new Response();
-        FilterChain chain1=new FilterChain();
-        chain1.add(new SymbolFiler());
-        chain1.add(new FaceFiler());
-        chain1.add(new UrlFiler());
-        chain1.add(new NumberFiler());
+        FilterChain chain1=new FilterChain()
+                .add(new SymbolFiler())
+                .add(new FaceFiler())
+                .add(new UrlFiler())
+                .add(new NumberFiler());
 
-        chain1.doFilter(req,resp);
+        chain1.doFilter(req,resp,chain1);
         System.out.println(req.msg);
         System.out.println(resp.msg);
     }
@@ -37,16 +37,18 @@ class Response{
     String msg="";
 }
 
-class FilterChain {
+class FilterChain  implements Filter{
     List<Filter> filters=new ArrayList<>();
 
     int index=0;
 
-    public void add(Filter filter){
+    public FilterChain add(Filter filter){
         filters.add(filter);
+        return this;
     }
 
-    public void doFilter(Request req,Response resp){
+    @Override
+    public void doFilter(Request req,Response resp,FilterChain chain){
         if(index == filters.size()) return;
         Filter filter=filters.get(index);
         System.out.println("index:"+index+","+filter.getClass());
@@ -68,7 +70,7 @@ class FaceFiler implements Filter {
     @Override
     public void doFilter(Request req,Response resp,FilterChain chain) {
         req.setMsg(req.getMsg()+" :) #");
-        chain.doFilter(req,resp);
+        chain.doFilter(req,resp,chain);
         resp.setMsg(resp.getMsg()+" ^V^ #");
     }
 }
@@ -77,7 +79,7 @@ class SymbolFiler implements Filter {
     @Override
     public void doFilter(Request req,Response resp,FilterChain chain) {
         req.setMsg(req.getMsg()+" <req> #");
-        chain.doFilter(req,resp);
+        chain.doFilter(req,resp,chain);
         resp.setMsg(resp.getMsg()+" [resp] #");
     }
 }
@@ -86,7 +88,7 @@ class UrlFiler implements Filter {
     @Override
     public void doFilter(Request req,Response resp,FilterChain chain) {
         req.setMsg(req.getMsg()+" mashibing.com #");
-        chain.doFilter(req,resp);
+        chain.doFilter(req,resp,chain);
         resp.setMsg(resp.getMsg()+" www.mashibing.com #");
     }
 }
@@ -95,7 +97,7 @@ class NumberFiler implements Filter {
     @Override
     public void doFilter(Request req,Response resp,FilterChain chain) {
         req.setMsg(req.getMsg()+" 996 #");
-        chain.doFilter(req,resp);
+        chain.doFilter(req,resp,chain);
         resp.setMsg(resp.getMsg()+" 995 #");
     }
 }
