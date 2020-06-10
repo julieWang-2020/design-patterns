@@ -4,13 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * @author wzh
  * @date 2020-06-02 22:19
  */
 
-public abstract class GameObject {
+public abstract class GameObject implements Serializable {
 
     @Getter
     @Setter

@@ -15,7 +15,7 @@ import java.util.Random;
  * @date 2020-05-20 23:18
  */
 @Data
-public class Tank extends GameObject{
+public class Tank extends GameObject {
     private static final int SPEED=5;
     public static final int WIDTH=ResourceMgr.goodTankD.getWidth(),HEIGHT=ResourceMgr.goodTankD.getHeight();
 

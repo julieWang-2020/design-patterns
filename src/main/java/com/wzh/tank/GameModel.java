@@ -5,6 +5,7 @@ import com.wzh.tank.cor.ColliderChain;
 import com.wzh.tank.vo.*;
 
 import java.awt.*;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * @author wzh
  * @date 2020-06-02 21:56
  */
-public class GameModel {
+public class GameModel implements Serializable {
 
     private GameModel(){ }
 
@@ -90,6 +91,52 @@ public class GameModel {
 
     public void remove(GameObject go){
         this.objects.remove(go);
+    }
+
+    public void memento() {
+        ObjectOutputStream oops=null;
+        try {
+            File file=new File("E:\\workspace\\gitspace\\design-patterns\\memento\\tank.t");
+            oops = new ObjectOutputStream(new FileOutputStream(file));
+            oops.writeObject(mainTank);
+            oops.writeObject(objects);
+            oops.writeObject(colliderChain);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            if(oops!=null) {
+                try {
+                    oops.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void rollback() {
+        ObjectInputStream oips=null;
+        try {
+            File file=new File("E:\\workspace\\gitspace\\design-patterns\\memento\\tank.t");
+            oips = new ObjectInputStream(new FileInputStream(file));
+            Tank mainTank= (Tank) oips.readObject();
+            List<GameObject> objects= (List<GameObject>) oips.readObject();
+            ColliderChain colliderChain= (ColliderChain) oips.readObject();
+
+            this.mainTank=mainTank;
+            this.objects=objects;
+            this.colliderChain=colliderChain;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            if(oips!=null) {
+                try {
+                    oips.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 //    public List<Bullet> getBullets() {

@@ -85,6 +85,12 @@ public class TankFrame extends Frame {
                 case KeyEvent.VK_SHIFT:
                     GameModel.getInstance().getMainTank().fire(ProptertyMgr.getString("doubleFS"));
                     break;
+                case KeyEvent.VK_S:
+                    GameModel.getInstance().memento();
+                    break;
+                case KeyEvent.VK_Z:
+                    GameModel.getInstance().rollback();
+                    break;
             }
             setMainTankDir();
         }
